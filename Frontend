@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Amazon Clone</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+    }
+
+    /* Header */
+    header {
+      background-color: #131921;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff9900;
+    }
+
+    .search-bar {
+      flex: 1;
+      margin: 0 20px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    /* Products Grid */
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 4px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .product-title {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .product-price {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Amazon</div>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search products...">
+  </div>
+</header>
+
+<main>
+  <div class="products" id="productGrid">
+    <!-- Products will be inserted here -->
+  </div>
+</main>
+
+<script>
+  const products = [
+    {
+      title: "Apple iPhone 14 Pro",
+      price: "$999",
+      image: "https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-pro-model-unselect-gallery-1-202209?wid=5120&hei=2880&fmt=jpeg&qlt=80&.v=1660753619946"
+    },
+    {
+      title: "Samsung Galaxy S22",
+      price: "$799",
+      image: "https://images.samsung.com/is/image/samsung/assets/global/galaxy-s22/gallery/galaxy-s22-highlights-kv-product-mo.jpg"
+    },
+    {
+      title: "Sony WH-1000XM4 Headphones",
+      price: "$348",
+      image: "https://m.media-amazon.com/images/I/71o8Q5XJS5L._AC_SL1500_.jpg"
+    },
+    {
+      title: "Dell XPS 13 Laptop",
+      price: "$1,099",
+      image: "https://i.dell.com/sites/csimages/App-Merchandizing_Images/all/xps-13-9315-laptop-pdp-mod-02.jpg"
+    },
+    {
+      title: "Amazon Echo Dot (5th Gen)",
+      price: "$49.99",
+      image: "https://m.media-amazon.com/images/I/61u0y9ADElL._AC_SL1000_.jpg"
+    }
+  ];
+
+  const productGrid = document.getElementById("productGrid");
+  const searchInput = document.getElementById("searchInput");
+
+  function renderProducts(filter = "") {
+    productGrid.innerHTML = "";
+
+    const filtered = products.filter(p =>
+      p.title.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      productGrid.innerHTML = "<p>No products found.</p>";
+      return;
+    }
+
+    filtered.forEach(product => {
+      const div = document.createElement("div");
+      div.className = "product";
+      div.innerHTML = `
+        <img src="${product.image}" alt="${product.title}">
+        <div class="product-title">${product.title}</div>
+        <div class="product-price">${product.price}</div>
+      `;
+      productGrid.appendChild(div);
+    });
+  }
+
+  // Initial render
+  renderProducts();
+
+  // Search event
+  searchInput.addEventListener("input", (e) => {
+    renderProducts(e.target.value);
